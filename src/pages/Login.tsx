@@ -12,9 +12,9 @@ function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center w-screen h-screen bg-gray-100">
-      <div className="p-8 w-100 bg-white shadow-md">
-        <h3 className="text-2xl mb-4 text-center font-semibold text-gray-800">
+    <div className="flex items-center justify-center w-screen h-screen">
+      <div className="p-8 w-100 bg-white border rounded shadow-md border-gray-200">
+        <h3 className="text-2xl mb-4 text-center uppercase font-bold text-blue-500">
           Login
         </h3>
         <form onSubmit={handleSubmit}>
