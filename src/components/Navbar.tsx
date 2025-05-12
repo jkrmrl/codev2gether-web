@@ -1,36 +1,48 @@
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutAction } from "../actions/auth.actions";
+import { RootState } from "../reducers/index";
+import { AppDispatch } from "../store";
 
 function Navbar() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("!!");
+    dispatch(logoutAction());
+    navigate("/login");
   };
 
   return (
     <nav className="p-4 text-white shadow-md bg-blue-500 ">
       <div className="flex items-center justify-between">
         <div className="text-lg font-bold">CoDev2gether</div>
-        <div className="relative">
-          <button
-            onClick={toggleDropdown}
-            className="py-2 px-4 rounded hover:bg-blue-400 cursor-pointer"
-          >
-            John
-          </button>
-          {isDropdownOpen && (
-            <div className="absolute mt-2 w-32 z-10 right-0 bg-white rounded-md shadow-lg">
-              <button
-                onClick={handleLogout}
-                className="block w-full py-2 px-4 text-gray-800 hover:bg-gray-200"
+        <div className="space-x-4">
+          {isAuthenticated ? (
+            <button
+              onClick={handleLogout}
+              className="py-2 px-4 font-semibold text-blue bg-white-500 rounded cursor-pointer hover:bg-blue-400"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="py-2 px-4 font-semibold text-blue bg-white-500 rounded cursor-pointer hover:bg-blue-400"
               >
-                Logout
-              </button>
-            </div>
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="py-2 px-4 font-semibold text-blue bg-white-500 rounded cursor-pointer hover:bg-blue-400"
+              >
+                Register
+              </Link>
+            </>
           )}
         </div>
       </div>

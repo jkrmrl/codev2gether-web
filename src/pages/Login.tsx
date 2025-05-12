@@ -1,15 +1,31 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { loginAction } from "../actions/auth.actions";
+import { AppDispatch } from "../store";
+import { RootState } from "../reducers/index";
 
 function Login() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { message, isAuthenticated } = useSelector(
+    (state: RootState) => state.auth
+  );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const username = usernameRef.current?.value || "";
     const password = passwordRef.current?.value || "";
-    console.log({ username, password });
+    dispatch(loginAction(username, password));
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/projects");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="flex items-center justify-center w-screen h-screen">
@@ -49,6 +65,11 @@ function Login() {
             >
               Sign In
             </button>
+            {message && (
+              <p className="mt-2 text-center text-sm text-red-500 ">
+                {message}
+              </p>
+            )}
           </div>
         </form>
       </div>
