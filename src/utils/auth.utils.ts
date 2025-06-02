@@ -1,8 +1,10 @@
+import { jwtDecode } from "jwt-decode";
+
 export const setAuthToken = (token: string) => {
   localStorage.setItem("accessToken", token);
 };
 
-export const getAuthToken = () => {
+export const getAuthToken = (): string | null => {
   return localStorage.getItem("accessToken");
 };
 
@@ -19,4 +21,16 @@ export const getRefreshToken = () => {
     }
   }
   return null;
+};
+
+export const decodeAccessToken = (): any | null => {
+  const token = getAuthToken();
+  if (!token) {
+    return null;
+  }
+  try {
+    return jwtDecode(token);
+  } catch (error) {
+    return null;
+  }
 };
