@@ -28,6 +28,25 @@ export function projectReducer(state = projectState, action: any) {
         projects: [],
         message: action.payload.message,
       };
+    case projectConstants.CREATE_PROJECT_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        message: null,
+      };
+    case projectConstants.CREATE_PROJECT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        projects: [...state.projects, action.payload],
+        message: null,
+      };
+    case projectConstants.CREATE_PROJECT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
     default:
       return state;
   }

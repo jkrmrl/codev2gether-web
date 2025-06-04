@@ -11,9 +11,12 @@ import {
   selectProjectsLoading,
   selectProjectsMessage,
 } from "../selectors/projects.selectors";
+import CreateProjectModal from "../components/CreateProjectModal";
 
 function Projects() {
   const [activeTab, setActiveTab] = useState<string>("all");
+  const [showCreateProjectModal, setShowCreateProjectModal] =
+    useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const projects = useSelector(selectAllProjects);
   const loading = useSelector(selectProjectsLoading);
@@ -23,6 +26,14 @@ function Projects() {
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
+  };
+
+  const handleCreateNewProjectClick = () => {
+    setShowCreateProjectModal(true);
+  };
+
+  const handleCloseCreateProjectModal = () => {
+    setShowCreateProjectModal(false);
   };
 
   useEffect(() => {
@@ -72,7 +83,6 @@ function Projects() {
       <h1 className="mb-4 text-2xl uppercase text-center font-bold text-blue-500">
         Hi, {currentUserName}!
       </h1>
-
       <div className="mb-6 border-b border-gray-200 flex items-center justify-between">
         <ul className="flex -mb-px">
           <li className="mr-2">
@@ -116,11 +126,13 @@ function Projects() {
             </>
           )}
         </ul>
-        <button className="text-xs py-2 px-2 font-semibold text-white rounded bg-blue-500 hover:bg-blue-700 cursor-pointer">
+        <button
+          className="text-xs py-2 px-2 font-semibold text-white rounded bg-blue-500 hover:bg-blue-700 cursor-pointer"
+          onClick={handleCreateNewProjectClick}
+        >
           Create New Project
         </button>
       </div>
-
       <div className="grid grid-cols-3 gap-4">
         {filteredProjects.map((project: any) => (
           <div
@@ -137,6 +149,9 @@ function Projects() {
           <p className="text-gray-500 col-span-full">No projects found</p>
         )}
       </div>
+      {showCreateProjectModal && (
+        <CreateProjectModal onClose={handleCloseCreateProjectModal} />
+      )}
     </div>
   );
 }

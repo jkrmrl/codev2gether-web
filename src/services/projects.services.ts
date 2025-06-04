@@ -22,3 +22,27 @@ export const getAllProjectsService = async (): Promise<any> => {
     throw error;
   }
 };
+
+export const createNewProjectService = async (
+  projectData: any
+): Promise<any> => {
+  const token = getAuthToken();
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(projectData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw errorData.message;
+    }
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    throw error;
+  }
+};
