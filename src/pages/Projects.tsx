@@ -17,6 +17,9 @@ function Projects() {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [showCreateProjectModal, setShowCreateProjectModal] =
     useState<boolean>(false);
+  const [openProjectMenuId, setOpenProjectMenuId] = useState<string | null>(
+    null
+  );
   const dispatch = useDispatch<AppDispatch>();
   const projects = useSelector(selectAllProjects);
   const loading = useSelector(selectProjectsLoading);
@@ -34,6 +37,10 @@ function Projects() {
 
   const handleCloseCreateProjectModal = () => {
     setShowCreateProjectModal(false);
+  };
+
+  const handleToggleProjectMenu = (projectId: string) => {
+    setOpenProjectMenuId(openProjectMenuId === projectId ? null : projectId);
   };
 
   useEffect(() => {
@@ -137,11 +144,45 @@ function Projects() {
         {filteredProjects.map((project: any) => (
           <div
             key={project.id}
-            className="bg-white rounded-md shadow-md p-6 cursor-pointer"
+            className="relative bg-white rounded-md shadow-md p-6 cursor-pointer"
           >
-            <h2 className="mb-4 text-sm font-semibold text-gray-700">
-              {project.name}
-            </h2>
+            <div className="flex justify-between">
+              <h2 className="mb-4 text-sm font-semibold text-gray-700">
+                {project.name}
+              </h2>
+              <div className="relative">
+                <button
+                  onClick={() => handleToggleProjectMenu(project.id)}
+                  className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                  </svg>
+                </button>
+                {openProjectMenuId === project.id && (
+                  <div className="absolute left-2 mt-2 w-32 bg-white rounded-md shadow-lg py-1 z-10">
+                    <button className="block px-2 py-2 text-xs text-gray-700 hover:bg-gray-100 w-full text-left">
+                      View Project
+                    </button>
+                    {currentUserId && project.owner_id === currentUserId && (
+                      <>
+                        <button className="block px-2 py-2 text-xs text-gray-700 hover:bg-gray-100 w-full text-left">
+                          Edit Project
+                        </button>
+                        <button className="block px-2 py-2 text-xs text-red-700 hover:bg-gray-100 w-full text-left">
+                          Delete Project
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
             <p className="text-xs text-gray-600">{project.description}</p>
           </div>
         ))}
