@@ -46,3 +46,51 @@ export const createNewProjectService = async (
     throw error;
   }
 };
+
+export const getProjectDetailsService = async (
+  projectId: string
+): Promise<any> => {
+  const token = getAuthToken();
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects/${projectId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw errorData.message;
+    }
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const editProjectDetailsService = async (
+  projectId: string,
+  projectData: any
+): Promise<any> => {
+  const token = getAuthToken();
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects/${projectId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(projectData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw errorData.message;
+    }
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    throw error;
+  }
+};

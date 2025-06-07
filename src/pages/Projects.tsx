@@ -12,14 +12,18 @@ import {
   selectProjectsMessage,
 } from "../selectors/projects.selectors";
 import CreateProjectModal from "../components/CreateProjectModal";
+import EditProjectModal from "../components/EditProjectModal";
 
 function Projects() {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [showCreateProjectModal, setShowCreateProjectModal] =
     useState<boolean>(false);
+  const [showEditProjectModal, setShowEditProjectModal] =
+    useState<boolean>(false);
   const [openProjectMenuId, setOpenProjectMenuId] = useState<string | null>(
     null
   );
+  const [projectIdToEdit, setProjectIdToEdit] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const projects = useSelector(selectAllProjects);
   const loading = useSelector(selectProjectsLoading);
@@ -41,6 +45,18 @@ function Projects() {
 
   const handleToggleProjectMenu = (projectId: string) => {
     setOpenProjectMenuId(openProjectMenuId === projectId ? null : projectId);
+  };
+
+  const handleEditProjectClick = (projectId: string) => {
+    setProjectIdToEdit(projectId);
+    setShowEditProjectModal(true);
+    setOpenProjectMenuId(null);
+  };
+
+  const handleCloseEditProjectModal = () => {
+    setShowEditProjectModal(false);
+    setProjectIdToEdit(null);
+    dispatch(getAllProjectsAction());
   };
 
   useEffect(() => {
@@ -171,7 +187,10 @@ function Projects() {
                     </button>
                     {currentUserId && project.owner_id === currentUserId && (
                       <>
-                        <button className="block px-2 py-2 text-xs text-gray-700 hover:bg-gray-100 w-full text-left">
+                        <button
+                          className="block px-2 py-2 text-xs text-gray-700 hover:bg-gray-100 w-full text-left"
+                          onClick={() => handleEditProjectClick(project.id)}
+                        >
                           Edit Project
                         </button>
                         <button className="block px-2 py-2 text-xs text-red-700 hover:bg-gray-100 w-full text-left">
@@ -192,6 +211,12 @@ function Projects() {
       </div>
       {showCreateProjectModal && (
         <CreateProjectModal onClose={handleCloseCreateProjectModal} />
+      )}
+      {showEditProjectModal && projectIdToEdit && (
+        <EditProjectModal
+          onClose={handleCloseEditProjectModal}
+          projectId={projectIdToEdit}
+        />
       )}
     </div>
   );
