@@ -98,6 +98,24 @@ export function projectReducer(state = projectState, action: any) {
         loading: false,
         message: action.payload.message,
       };
+    case projectConstants.DELETE_PROJECT_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        message: null,
+      };
+    case projectConstants.DELETE_PROJECT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload,
+      };
+    case projectConstants.DELETE_PROJECT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
     default:
       return state;
   }

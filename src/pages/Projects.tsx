@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store";
-import { getAllProjectsAction } from "../actions/projects.actions";
+import {
+  getAllProjectsAction,
+  deleteProjectAction,
+} from "../actions/projects.actions";
 import {
   selectCurrentUserId,
   selectCurrentUserName,
@@ -56,6 +59,11 @@ function Projects() {
   const handleCloseEditProjectModal = () => {
     setShowEditProjectModal(false);
     setProjectIdToEdit(null);
+    dispatch(getAllProjectsAction());
+  };
+
+  const handleDeleteProjectClick = async (projectId: string) => {
+    await dispatch(deleteProjectAction(projectId));
     dispatch(getAllProjectsAction());
   };
 
@@ -193,7 +201,10 @@ function Projects() {
                         >
                           Edit Project
                         </button>
-                        <button className="block px-2 py-2 text-xs text-red-700 hover:bg-gray-100 w-full text-left">
+                        <button
+                          className="block px-2 py-2 text-xs text-red-700 hover:bg-gray-100 w-full text-left"
+                          onClick={() => handleDeleteProjectClick(project.id)}
+                        >
                           Delete Project
                         </button>
                       </>
