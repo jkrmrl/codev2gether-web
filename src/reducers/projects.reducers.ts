@@ -4,6 +4,7 @@ const projectState = {
   loading: false,
   projects: [],
   projectDetails: null,
+  executionResult: null,
   message: null,
 };
 
@@ -53,6 +54,7 @@ export function projectReducer(state = projectState, action: any) {
         ...state,
         loading: true,
         projectDetails: null,
+        executionResult: null,
         message: null,
       };
     case projectConstants.GET_PROJECT_DETAILS_SUCCESS:
@@ -115,6 +117,27 @@ export function projectReducer(state = projectState, action: any) {
         ...state,
         loading: false,
         message: action.payload.message,
+      };
+    case projectConstants.EXECUTE_CODE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        message: null,
+        executionResult: null,
+      };
+    case projectConstants.EXECUTE_CODE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        executionResult: action.payload.executionResult,
+        message: action.payload.message,
+      };
+    case projectConstants.EXECUTE_CODE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+        executionResult: null,
       };
     default:
       return state;

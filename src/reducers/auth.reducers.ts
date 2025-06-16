@@ -1,7 +1,7 @@
 import { authConstants } from "../constants/auth.constants";
 
 const initialState = {
-  loading: false,
+  loading: true,
   isAuthenticated: false,
   message: null,
 };

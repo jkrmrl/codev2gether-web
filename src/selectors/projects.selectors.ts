@@ -11,3 +11,6 @@ export const selectProjectsLoading = (state: RootState): any | null =>
 
 export const selectProjectsMessage = (state: RootState): string | null =>
   state.projects.message;
+
+export const selectProjectCodeOutput = (state: RootState): string | null =>
+  state.projects.executionResult;

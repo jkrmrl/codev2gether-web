@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../store";
 import {
   getAllProjectsAction,
   deleteProjectAction,
+  getProjectDetailsAction,
 } from "../actions/projects.actions";
 import {
   selectCurrentUserId,
@@ -33,6 +35,7 @@ function Projects() {
   const message = useSelector(selectProjectsMessage);
   const currentUserName = useSelector(selectCurrentUserName);
   const currentUserId = useSelector(selectCurrentUserId);
+  const navigate = useNavigate();
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
@@ -65,6 +68,11 @@ function Projects() {
   const handleDeleteProjectClick = async (projectId: string) => {
     await dispatch(deleteProjectAction(projectId));
     dispatch(getAllProjectsAction());
+  };
+
+  const handleProjectClick = async (projectId: string) => {
+    await dispatch(getProjectDetailsAction(projectId));
+    navigate(`/editor/${projectId}`);
   };
 
   useEffect(() => {
@@ -169,6 +177,10 @@ function Projects() {
           <div
             key={project.id}
             className="relative bg-white rounded-md shadow-md p-6 cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleProjectClick(project.id);
+            }}
           >
             <div className="flex justify-between">
               <h2 className="mb-4 text-sm font-semibold text-gray-700">
@@ -176,7 +188,10 @@ function Projects() {
               </h2>
               <div className="relative">
                 <button
-                  onClick={() => handleToggleProjectMenu(project.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleToggleProjectMenu(project.id);
+                  }}
                   className="text-gray-500 hover:text-gray-700 focus:outline-none"
                 >
                   <svg
@@ -197,13 +212,19 @@ function Projects() {
                       <>
                         <button
                           className="block px-2 py-2 text-xs text-gray-700 hover:bg-gray-100 w-full text-left"
-                          onClick={() => handleEditProjectClick(project.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditProjectClick(project.id);
+                          }}
                         >
                           Edit Project
                         </button>
                         <button
                           className="block px-2 py-2 text-xs text-red-700 hover:bg-gray-100 w-full text-left"
-                          onClick={() => handleDeleteProjectClick(project.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteProjectClick(project.id);
+                          }}
                         >
                           Delete Project
                         </button>

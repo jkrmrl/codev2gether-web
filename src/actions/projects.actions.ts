@@ -5,6 +5,7 @@ import {
   getProjectDetailsService,
   editProjectDetailsService,
   deleteProjectService,
+  executeProjectCodeService,
 } from "../services/projects.services";
 
 export const getAllProjectsAction = () => async (dispatch: any) => {
@@ -89,6 +90,26 @@ export const deleteProjectAction =
     } catch (error: any) {
       dispatch({
         type: projectConstants.DELETE_PROJECT_FAILURE,
+        payload: { message: error.toString() },
+      });
+    }
+  };
+
+export const executeProjectCodeAction =
+  (projectId: string, codeValue: string) => async (dispatch: any) => {
+    dispatch({ type: projectConstants.EXECUTE_CODE_REQUEST });
+    try {
+      const output = await executeProjectCodeService(projectId, codeValue);
+      dispatch({
+        type: projectConstants.EXECUTE_CODE_SUCCESS,
+        payload: {
+          executionResult: output.executionResult,
+          message: output.message,
+        },
+      });
+    } catch (error: any) {
+      dispatch({
+        type: projectConstants.EXECUTE_CODE_FAILURE,
         payload: { message: error.toString() },
       });
     }

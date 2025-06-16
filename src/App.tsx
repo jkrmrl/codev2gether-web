@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Projects from "./pages/Projects";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import CodeEditor from "./pages/CodeEditor";
 import Navbar from "./components/Navbar";
 import { useSelector } from "react-redux";
 import { useAuthCheck } from "./hooks/auth.hooks";
@@ -40,6 +41,12 @@ function App() {
           path="/"
           element={
             isAuthenticated ? <Projects /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/editor/:projectId"
+          element={
+            isAuthenticated ? <CodeEditor /> : <Navigate to="/login" replace />
           }
         />
       </Routes>
