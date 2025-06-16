@@ -1,6 +1,9 @@
 import { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { executeProjectCodeAction } from "../actions/projects.actions";
+import {
+  executeProjectCodeAction,
+  saveProjectCodeAction,
+} from "../actions/projects.actions";
 import {
   selectProjectDetails,
   selectProjectCodeOutput,
@@ -154,19 +157,24 @@ const CodeEditor = () => {
     }
   };
 
-  const handleSaveCode = () => {};
+  const handleSaveCode = () => {
+    if (editorRef.current && projectDetails?.id) {
+      const code = editorRef.current.state.doc.toString();
+      dispatch(saveProjectCodeAction(projectDetails.id, code));
+    }
+  };
 
   return (
     <div className="flex h-screen bg-gray-100 text-gray-800">
       <div className="w-14 bg-white border-r border-gray-200 flex flex-col items-center py-4 space-y-4">
         <button
-          className="text-gray-400 hover:text-blue-500"
+          className="text-gray-400 hover:text-blue-500 cursor-pointer"
           title="View History"
         >
           <HistoryIcon size={20} />
         </button>
         <button
-          className="text-gray-400 hover:text-blue-500"
+          className="text-gray-400 hover:text-blue-500 cursor-pointer"
           title="View Collaborators"
         >
           <UsersIcon size={20} />
@@ -183,14 +191,14 @@ const CodeEditor = () => {
             <div className="flex justify-end px-4 py-2 border-b border-gray-200 space-x-2">
               <button
                 onClick={handleSaveCode}
-                className="flex items-center text-sm text-blue-500 border border-blue-500 px-3 py-1 rounded hover:bg-blue-50"
+                className="flex items-center text-sm text-blue-500 border border-blue-500 px-3 py-1 rounded hover:bg-blue-50 cursor-pointer"
               >
                 <SaveIcon size={16} className="mr-1" />
                 Save
               </button>
               <button
                 onClick={handleRunCode}
-                className="flex items-center text-sm text-white bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
+                className="flex items-center text-sm text-white bg-blue-500 px-3 py-1 rounded hover:bg-blue-600 cursor-pointer"
               >
                 <PlayIcon size={16} className="mr-1" />
                 Run

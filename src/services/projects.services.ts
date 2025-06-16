@@ -143,3 +143,28 @@ export const executeProjectCodeService = async (
     throw error;
   }
 };
+
+export const saveProjectCodeService = async (
+  projectId: string,
+  codeValue: string
+): Promise<any> => {
+  const token = getAuthToken();
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects/${projectId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ code_value: codeValue }),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw errorData.message;
+    }
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    throw error;
+  }
+};

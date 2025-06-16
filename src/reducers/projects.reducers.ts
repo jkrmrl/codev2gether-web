@@ -139,6 +139,31 @@ export function projectReducer(state = projectState, action: any) {
         message: action.payload.message,
         executionResult: null,
       };
+    case projectConstants.SAVE_CODE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        message: null,
+      };
+    case projectConstants.SAVE_CODE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        projectDetails: {
+          ...(state.projectDetails as any),
+          codes: [
+            ...(state.projectDetails as any).codes,
+            action.payload.savedCode,
+          ],
+        },
+        message: action.payload.message,
+      };
+    case projectConstants.SAVE_CODE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
     default:
       return state;
   }

@@ -6,6 +6,7 @@ import {
   editProjectDetailsService,
   deleteProjectService,
   executeProjectCodeService,
+  saveProjectCodeService,
 } from "../services/projects.services";
 
 export const getAllProjectsAction = () => async (dispatch: any) => {
@@ -110,6 +111,26 @@ export const executeProjectCodeAction =
     } catch (error: any) {
       dispatch({
         type: projectConstants.EXECUTE_CODE_FAILURE,
+        payload: { message: error.toString() },
+      });
+    }
+  };
+
+export const saveProjectCodeAction =
+  (projectId: string, codeValue: string) => async (dispatch: any) => {
+    dispatch({ type: projectConstants.SAVE_CODE_REQUEST });
+    try {
+      const newCode = await saveProjectCodeService(projectId, codeValue);
+      dispatch({
+        type: projectConstants.SAVE_CODE_SUCCESS,
+        payload: {
+          savedCode: newCode.savedCode,
+          message: newCode.message,
+        },
+      });
+    } catch (error: any) {
+      dispatch({
+        type: projectConstants.SAVE_CODE_FAILURE,
         payload: { message: error.toString() },
       });
     }
