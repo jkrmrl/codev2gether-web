@@ -3,6 +3,7 @@ import Projects from "./pages/Projects";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CodeEditor from "./pages/CodeEditor";
+import CodeHistory from "./pages/CodeHistory";
 import Navbar from "./components/Navbar";
 import { useSelector } from "react-redux";
 import { useAuthCheck } from "./hooks/auth.hooks";
@@ -47,6 +48,12 @@ function App() {
           path="/editor/:projectId"
           element={
             isAuthenticated ? <CodeEditor /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/editor-history/:projectId"
+          element={
+            isAuthenticated ? <CodeHistory /> : <Navigate to="/login" replace />
           }
         />
       </Routes>

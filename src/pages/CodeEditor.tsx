@@ -29,6 +29,7 @@ import {
   bracketMatching,
 } from "@codemirror/language";
 import { AppDispatch } from "../store";
+import { useNavigate } from "react-router-dom";
 
 const myHighlightStyle = HighlightStyle.define([
   { tag: tags.keyword, color: "blue", fontWeight: "bold" },
@@ -43,6 +44,7 @@ const myHighlightStyle = HighlightStyle.define([
 
 const CodeEditor = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const projectDetails = useSelector(selectProjectDetails);
   const output = useSelector(selectProjectCodeOutput) as any;
   const codeRef = useRef<HTMLDivElement>(null);
@@ -142,6 +144,8 @@ const CodeEditor = () => {
       });
     }
 
+    console.log(projectDetails);
+
     return () => {
       if (editorRef.current) {
         editorRef.current.destroy();
@@ -165,10 +169,11 @@ const CodeEditor = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 text-gray-800">
+    <div className="flex min-h-screen bg-gray-100 text-gray-800">
       <div className="w-14 bg-white border-r border-gray-200 flex flex-col items-center py-4 space-y-4">
         <button
           className="text-gray-400 hover:text-blue-500 cursor-pointer"
+          onClick={() => navigate(`/editor-history/${projectDetails.id}`)}
           title="View History"
         >
           <HistoryIcon size={20} />
