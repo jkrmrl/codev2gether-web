@@ -24,7 +24,7 @@ const CodeHistory = () => {
 
       {codes.length === 0 ? (
         <div className="flex items-center justify-center h-64 text-gray-500 text-center text-sm">
-          No code history available.
+          No code history available
         </div>
       ) : (
         <div className="space-y-4">

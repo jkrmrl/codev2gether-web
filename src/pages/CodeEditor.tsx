@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   executeProjectCodeAction,
@@ -30,6 +30,7 @@ import {
 } from "@codemirror/language";
 import { AppDispatch } from "../store";
 import { useNavigate } from "react-router-dom";
+import ViewCollaboratorsModal from "../components/ViewCollaboratorsModal";
 
 const myHighlightStyle = HighlightStyle.define([
   { tag: tags.keyword, color: "blue", fontWeight: "bold" },
@@ -49,6 +50,7 @@ const CodeEditor = () => {
   const output = useSelector(selectProjectCodeOutput) as any;
   const codeRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<EditorView | null>(null);
+  const [showCollaborators, setShowCollaborators] = useState(false);
 
   const getLanguageMode = (language: string) => {
     switch (language.toLowerCase()) {
@@ -180,6 +182,7 @@ const CodeEditor = () => {
         </button>
         <button
           className="text-gray-400 hover:text-blue-500 cursor-pointer"
+          onClick={() => setShowCollaborators(true)}
           title="View Collaborators"
         >
           <UsersIcon size={20} />
@@ -222,6 +225,9 @@ const CodeEditor = () => {
           </div>
         </div>
       </div>
+      {showCollaborators && (
+        <ViewCollaboratorsModal onClose={() => setShowCollaborators(false)} />
+      )}
     </div>
   );
 };
