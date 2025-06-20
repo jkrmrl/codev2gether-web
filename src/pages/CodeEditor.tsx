@@ -8,6 +8,7 @@ import {
   selectProjectDetails,
   selectProjectCodeOutput,
 } from "../selectors/projects.selectors";
+import { selectCurrentUserId } from "../selectors/auth.selectors";
 import { PlayIcon, SaveIcon, UsersIcon, HistoryIcon } from "lucide-react";
 import { EditorView, keymap, lineNumbers } from "@codemirror/view";
 import { EditorState, Extension } from "@codemirror/state";
@@ -47,6 +48,7 @@ const CodeEditor = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const projectDetails = useSelector(selectProjectDetails);
+  const currentUserId = selectCurrentUserId();
   const output = useSelector(selectProjectCodeOutput) as any;
   const codeRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<EditorView | null>(null);
@@ -66,6 +68,18 @@ const CodeEditor = () => {
         return javascript();
     }
   };
+
+  const isViewer = (() => {
+    if (!projectDetails || currentUserId == null) return false;
+
+    if (projectDetails.owner_id === currentUserId) return false;
+
+    const currentCollaborator = projectDetails.collaborators.find(
+      (c: { user_id: number }) => c.user_id === currentUserId
+    );
+
+    return currentCollaborator?.access_level === "viewer";
+  })();
 
   useEffect(() => {
     if (codeRef.current && !editorRef.current) {
@@ -140,6 +154,7 @@ const CodeEditor = () => {
             syntaxHighlighting(myHighlightStyle),
             closeBrackets(),
             bracketMatching(),
+            EditorView.editable.of(!isViewer),
           ],
         }),
         parent: codeRef.current,
@@ -199,7 +214,10 @@ const CodeEditor = () => {
             <div className="flex justify-end px-4 py-2 border-b border-gray-200 space-x-2">
               <button
                 onClick={handleSaveCode}
-                className="flex items-center text-sm text-blue-500 border border-blue-500 px-3 py-1 rounded hover:bg-blue-50 cursor-pointer"
+                disabled={isViewer}
+                className={
+                  "flex items-center text-sm text-blue-500 border border-blue-500 px-3 py-1 rounded hover:bg-blue-50 cursor-pointer"
+                }
               >
                 <SaveIcon size={16} className="mr-1" />
                 Save
