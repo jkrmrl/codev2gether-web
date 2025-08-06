@@ -106,7 +106,7 @@ function Projects() {
   }
 
   return (
-    <div className="mx-48 mt-36 mb-36 p-8 border rounded shadow-md border-gray-200">
+    <div className="container max-w-4xl mx-auto mt-14 mb-14 px-8 py-16 border rounded shadow-md border-gray-200">
       <h1 className="mb-4 text-2xl uppercase text-center font-bold text-blue-500">
         Hi, {currentUserName}!
       </h1>

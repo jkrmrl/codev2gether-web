@@ -205,9 +205,6 @@ const CodeEditor = () => {
         >
           <HistoryIcon size={20} />
         </button>
-        <span className="text-gray-500 text-sm">
-          {userCount} user{userCount !== 1 ? "s" : ""} online
-        </span>
         <button
           className="text-gray-400 hover:text-blue-500 cursor-pointer"
           onClick={() => setShowCollaborators(true)}
@@ -222,12 +219,15 @@ const CodeEditor = () => {
             {projectDetails.name}
           </div>
         </div>
-        <div className="flex flex-1 overflow-hidden">
-          <div className="flex-1 flex flex-col border-r border-gray-200 bg-white">
-            <div className="w-xl border-l border-gray-200 bg-white p-4 overflow-auto">
+        <div className="flex flex-1 overflow-hidden h-full flex-col md:flex-row">
+          <div className="flex-1 flex flex-col border-b border-gray-200 md:border-r md:border-b-0 bg-white">
+            <div className="w-full md:w-xl border-l border-gray-200 bg-white p-4 overflow-auto">
               <div className="text-sm text-gray-500 mb-2 font-medium">
                 Active Users
               </div>
+              <span className="text-gray-500 text-sm">
+                {userCount} user{userCount !== 1 ? "s" : ""} online
+              </span>
               <ul className="text-sm text-gray-700">
                 {activeUsers.map((user, index) => (
                   <li key={index} className="flex items-center space-x-2">
@@ -261,10 +261,10 @@ const CodeEditor = () => {
             </div>
             <div
               ref={codeRef}
-              className="flex-1 p-4 bg-gray-100 text-gray-700"
+              className="flex-1 h-24 p-4 bg-gray-100 text-gray-700 overflow-auto"
             ></div>
           </div>
-          <div className="w-xl border-l border-gray-200 bg-white p-4 overflow-auto">
+          <div className="flex-1 border-l border-gray-200 bg-white p-4 overflow-auto">
             <div className="text-sm text-gray-500 mb-2 font-medium">Output</div>
             <pre className="text-sm text-gray-700 whitespace-pre-wrap">
               {output?.stdout || "No output yet."}
