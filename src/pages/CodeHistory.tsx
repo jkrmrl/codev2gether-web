@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
-import { selectProjectDetails } from "../selectors/projects.selectors";
+import * as selectors from "../selectors";
 import { diffLines } from "diff";
 
 const CodeHistory = () => {
-  const projectDetails = useSelector(selectProjectDetails);
+  const projectDetails = useSelector(selectors.selectProjectDetails);
 
   const codes = [...(projectDetails?.codes || [])].sort(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()

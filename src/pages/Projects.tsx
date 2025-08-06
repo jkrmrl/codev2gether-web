@@ -2,20 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../store";
-import {
-  getAllProjectsAction,
-  deleteProjectAction,
-  getProjectDetailsAction,
-} from "../actions/projects.actions";
-import {
-  selectCurrentUserId,
-  selectCurrentUserName,
-} from "../selectors/auth.selectors";
-import {
-  selectAllProjects,
-  selectProjectsLoading,
-  selectProjectsMessage,
-} from "../selectors/projects.selectors";
+import * as actions from "../actions";
+import * as selectors from "../selectors";
 import CreateProjectModal from "../components/CreateProjectModal";
 import EditProjectModal from "../components/EditProjectModal";
 
@@ -30,11 +18,11 @@ function Projects() {
   );
   const [projectIdToEdit, setProjectIdToEdit] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
-  const projects = useSelector(selectAllProjects);
-  const loading = useSelector(selectProjectsLoading);
-  const message = useSelector(selectProjectsMessage);
-  const currentUserName = useSelector(selectCurrentUserName);
-  const currentUserId = useSelector(selectCurrentUserId);
+  const projects = useSelector(selectors.selectAllProjects);
+  const loading = useSelector(selectors.selectProjectsLoading);
+  const message = useSelector(selectors.selectProjectsMessage);
+  const currentUserName = useSelector(selectors.selectCurrentUserName);
+  const currentUserId = useSelector(selectors.selectCurrentUserId);
   const navigate = useNavigate();
 
   const handleTabClick = (tab: string) => {
@@ -62,21 +50,21 @@ function Projects() {
   const handleCloseEditProjectModal = () => {
     setShowEditProjectModal(false);
     setProjectIdToEdit(null);
-    dispatch(getAllProjectsAction());
+    dispatch(actions.getAllProjectsAction());
   };
 
   const handleDeleteProjectClick = async (projectId: string) => {
-    await dispatch(deleteProjectAction(projectId));
-    dispatch(getAllProjectsAction());
+    await dispatch(actions.deleteProjectAction(projectId));
+    dispatch(actions.getAllProjectsAction());
   };
 
   const handleProjectClick = async (projectId: string) => {
-    await dispatch(getProjectDetailsAction(projectId));
+    await dispatch(actions.getProjectDetailsAction(projectId));
     navigate(`/editor/${projectId}`);
   };
 
   useEffect(() => {
-    dispatch(getAllProjectsAction());
+    dispatch(actions.getAllProjectsAction());
   }, [dispatch]);
 
   const filteredProjects = (projects || []).filter((project: any) => {

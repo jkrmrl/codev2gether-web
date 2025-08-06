@@ -1,16 +1,12 @@
 import { authConstants } from "../constants/auth.constants";
-import {
-  loginService,
-  refreshTokenService,
-  logoutService,
-} from "../services/auth.services";
-import { clearAuthToken } from "../utils/auth.utils";
+import * as services from "../services";
+import * as utils from "../utils";
 
 export const loginAction =
   (username: string, password: string) => async (dispatch: any) => {
     dispatch({ type: authConstants.LOGIN_REQUEST });
     try {
-      const data = await loginService(username, password);
+      const data = await services.loginService(username, password);
       dispatch({
         type: authConstants.LOGIN_SUCCESS,
         payload: {
@@ -28,13 +24,13 @@ export const loginAction =
 export const refreshTokenAction = () => async (dispatch: any) => {
   dispatch({ type: authConstants.REFRESH_TOKEN_REQUEST });
   try {
-    const data = await refreshTokenService();
+    const data = await services.refreshTokenService();
     dispatch({
       type: authConstants.REFRESH_TOKEN_SUCCESS,
       payload: { accessToken: data.accessToken },
     });
   } catch (error: any) {
-    clearAuthToken();
+    utils.clearAuthToken();
     dispatch({
       type: authConstants.REFRESH_TOKEN_FAILURE,
       payload: { message: error.toString() },
@@ -45,7 +41,7 @@ export const refreshTokenAction = () => async (dispatch: any) => {
 export const logoutAction = () => async (dispatch: any) => {
   dispatch({ type: authConstants.LOGOUT_REQUEST });
   try {
-    await logoutService();
+    await services.logoutService();
     dispatch({ type: authConstants.LOGOUT_SUCCESS });
   } catch (error: any) {
     dispatch({

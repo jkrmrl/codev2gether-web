@@ -1,18 +1,10 @@
 import { projectConstants } from "../constants/projects.contants";
-import {
-  getAllProjectsService,
-  createNewProjectService,
-  getProjectDetailsService,
-  editProjectDetailsService,
-  deleteProjectService,
-  executeProjectCodeService,
-  saveProjectCodeService,
-} from "../services/projects.services";
+import * as services from "../services";
 
 export const getAllProjectsAction = () => async (dispatch: any) => {
   dispatch({ type: projectConstants.GET_PROJECTS_REQUEST });
   try {
-    const projects = await getAllProjectsService();
+    const projects = await services.getAllProjectsService();
     dispatch({
       type: projectConstants.GET_PROJECTS_SUCCESS,
       payload: projects.projects,
@@ -29,7 +21,7 @@ export const createNewProjectAction =
   (projectData: any) => async (dispatch: any) => {
     dispatch({ type: projectConstants.CREATE_PROJECT_REQUEST });
     try {
-      const newProject = await createNewProjectService(projectData);
+      const newProject = await services.createNewProjectService(projectData);
       dispatch({
         type: projectConstants.CREATE_PROJECT_SUCCESS,
         payload: newProject.project,
@@ -46,7 +38,7 @@ export const getProjectDetailsAction =
   (projectId: string) => async (dispatch: any) => {
     dispatch({ type: projectConstants.GET_PROJECT_DETAILS_REQUEST });
     try {
-      const project = await getProjectDetailsService(projectId);
+      const project = await services.getProjectDetailsService(projectId);
       dispatch({
         type: projectConstants.GET_PROJECT_DETAILS_SUCCESS,
         payload: project.project,
@@ -63,7 +55,7 @@ export const editProjectDetailsAction =
   (projectId: string, projectData: any) => async (dispatch: any) => {
     dispatch({ type: projectConstants.EDIT_PROJECT_REQUEST });
     try {
-      const newProject = await editProjectDetailsService(
+      const newProject = await services.editProjectDetailsService(
         projectId,
         projectData
       );
@@ -83,7 +75,7 @@ export const deleteProjectAction =
   (projectId: string) => async (dispatch: any) => {
     dispatch({ type: projectConstants.DELETE_PROJECT_REQUEST });
     try {
-      const response = await deleteProjectService(projectId);
+      const response = await services.deleteProjectService(projectId);
       dispatch({
         type: projectConstants.DELETE_PROJECT_SUCCESS,
         payload: response,
@@ -100,7 +92,10 @@ export const executeProjectCodeAction =
   (projectId: string, codeValue: string) => async (dispatch: any) => {
     dispatch({ type: projectConstants.EXECUTE_CODE_REQUEST });
     try {
-      const output = await executeProjectCodeService(projectId, codeValue);
+      const output = await services.executeProjectCodeService(
+        projectId,
+        codeValue
+      );
       dispatch({
         type: projectConstants.EXECUTE_CODE_SUCCESS,
         payload: {
@@ -120,7 +115,10 @@ export const saveProjectCodeAction =
   (projectId: string, codeValue: string) => async (dispatch: any) => {
     dispatch({ type: projectConstants.SAVE_CODE_REQUEST });
     try {
-      const newCode = await saveProjectCodeService(projectId, codeValue);
+      const newCode = await services.saveProjectCodeService(
+        projectId,
+        codeValue
+      );
       dispatch({
         type: projectConstants.SAVE_CODE_SUCCESS,
         payload: {

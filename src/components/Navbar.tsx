@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { logoutAction } from "../actions/auth.actions";
+import * as actions from "../actions";
 import { RootState } from "../reducers/index";
 import { AppDispatch } from "../store";
 
@@ -12,7 +12,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logoutAction());
+    dispatch(actions.logoutAction());
     navigate("/login");
   };
 

@@ -3,18 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginAction } from "../actions/auth.actions";
 import { AppDispatch } from "../store";
-import {
-  selectAuthIsAuthenticated,
-  selectAuthMessage,
-} from "../selectors/auth.selectors";
+import * as selectors from "../selectors";
 
 function Login() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const isAuthenticated = useSelector(selectAuthIsAuthenticated);
-  const message = useSelector(selectAuthMessage);
+  const isAuthenticated = useSelector(selectors.selectAuthIsAuthenticated);
+  const message = useSelector(selectors.selectAuthMessage);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,14 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store";
-import {
-  getProjectDetailsAction,
-  editProjectDetailsAction,
-} from "../actions/projects.actions";
-import {
-  selectProjectDetails,
-  selectProjectsLoading,
-} from "../selectors/projects.selectors";
+import * as actions from "../actions";
+import * as selectors from "../selectors";
 
 const programmingLanguages = ["Python", "Java", "Javascript", "C#", "C++", "R"];
 
@@ -20,8 +14,8 @@ function EditProjectModal({
   projectId: string;
 }) {
   const dispatch = useDispatch<AppDispatch>();
-  const loading = useSelector(selectProjectsLoading);
-  const projectDetails = useSelector(selectProjectDetails);
+  const loading = useSelector(selectors.selectProjectsLoading);
+  const projectDetails = useSelector(selectors.selectProjectDetails);
   const projectNameRef = useRef<HTMLInputElement>(null);
   const projectDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const programmingLanguageRef = useRef<HTMLSelectElement>(null);
@@ -37,7 +31,7 @@ function EditProjectModal({
 
   useEffect(() => {
     if (projectId && (!projectDetails || projectDetails.id !== projectId)) {
-      dispatch(getProjectDetailsAction(projectId));
+      dispatch(actions.getProjectDetailsAction(projectId));
     }
   }, [dispatch, projectId, projectDetails]);
 
@@ -124,8 +118,8 @@ function EditProjectModal({
       })),
     };
 
-    await dispatch(editProjectDetailsAction(projectId, projectData));
-    dispatch(getProjectDetailsAction(projectId));
+    await dispatch(actions.editProjectDetailsAction(projectId, projectData));
+    dispatch(actions.getProjectDetailsAction(projectId));
     onClose();
   };
 

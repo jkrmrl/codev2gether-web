@@ -1,14 +1,14 @@
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store";
-import { createNewProjectAction } from "../actions/projects.actions";
-import { selectProjectsLoading } from "../selectors/projects.selectors";
+import * as actions from "../actions";
+import * as selectors from "../selectors";
 
 const programmingLanguages = ["Python", "Java", "Javascript", "C#", "C++", "R"];
 
 function CreateProjectModal({ onClose }: { onClose: () => void }) {
   const dispatch = useDispatch<AppDispatch>();
-  const loading = useSelector(selectProjectsLoading);
+  const loading = useSelector(selectors.selectProjectsLoading);
   const projectNameRef = useRef<HTMLInputElement>(null);
   const projectDescriptionRef = useRef<HTMLTextAreaElement>(null);
   const programmingLanguageRef = useRef<HTMLSelectElement>(null);
@@ -77,7 +77,7 @@ function CreateProjectModal({ onClose }: { onClose: () => void }) {
       })),
     };
 
-    dispatch(createNewProjectAction(projectData));
+    dispatch(actions.createNewProjectAction(projectData));
     onClose();
   };
 

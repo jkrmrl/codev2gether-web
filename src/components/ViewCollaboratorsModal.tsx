@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
-import { selectProjectDetails } from "../selectors/projects.selectors";
+import * as selectors from "../selectors";
 
 const ViewCollaboratorsModal = ({ onClose }: { onClose: () => void }) => {
-  const projectDetails = useSelector(selectProjectDetails);
+  const projectDetails = useSelector(selectors.selectProjectDetails);
 
   return (
     <div className="fixed inset-0 bg-gray-900/20 flex items-center justify-center z-50 p-4">
